@@ -1,4 +1,4 @@
-package ameda
+package goutil
 
 // FormatUintByDict convert num into corresponding string according to dict.
 func FormatUintByDict(dict []byte, num uint64) string {

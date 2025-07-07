@@ -40,3 +40,6 @@ _testmain.go
 .idea
 .vscode
 
+# Compatible module name
+go.mod
+go.sum

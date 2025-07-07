@@ -1,55 +1,41 @@
 package goutil
 
 import (
-	"bytes"
 	"crypto/rand"
-	"encoding/base64"
 	"errors"
-	mrand "math/rand"
-
-	"github.com/andeya/goutil/internal/ameda"
 )
 
 // NewRandom creates a new padded Encoding defined by the given alphabet string.
 func NewRandom(alphabet string) *Random {
-	r := new(Random)
-	diff := 64 - len(alphabet)
-	if diff < 0 {
-		r.substitute = []byte(alphabet[64:])
-		r.substituteLen = len(r.substitute)
-		alphabet = alphabet[:64]
-	} else {
-		r.substitute = []byte(alphabet)
-		r.substituteLen = len(r.substitute)
-		if diff > 0 {
-			alphabet += string(bytes.Repeat([]byte{0x00}, diff))
+	var set = make(map[rune]struct{}, len(alphabet))
+	var substitute = make([]rune, 0, len(alphabet))
+	for _, b := range alphabet {
+		if _, ok := set[b]; !ok {
+			substitute = append(substitute, b)
+			set[b] = struct{}{}
 		}
 	}
-	r.encoding = base64.NewEncoding(alphabet).WithPadding(base64.NoPadding)
-	return r
+	return &Random{
+		substitute:    substitute,
+		substituteLen: len(substitute),
+	}
 }
 
 // Random random string creator.
 type Random struct {
-	encoding      *base64.Encoding
-	substitute    []byte
+	substitute    []rune
 	substituteLen int
 }
 
 // RandomString returns a base64 encoded securely generated
 // random string. It will panic if the system's secure random number generator
 // fails to function correctly.
-// The length n must be an integer multiple of 4, otherwise the last character will be padded with `=`.
 func (r *Random) RandomString(length int) string {
-	d := r.encoding.DecodedLen(length)
-	buf := make([]byte, length)
-	r.encoding.Encode(buf, RandomBytes(d))
-	for k, v := range buf {
-		if v == 0x00 {
-			buf[k] = r.substitute[mrand.Intn(r.substituteLen)]
-		}
+	buf := make([]rune, length)
+	for i, b := range RandomBytes(length) {
+		buf[i] = r.substitute[int(b)%r.substituteLen]
 	}
-	return ameda.UnsafeBytesToString(buf)
+	return string(buf)
 }
 
 const tsLen = 6 // base62=ZZZZZZ, unix=56800235583, time=3769-12-05 11:13:03 +0800 CST
@@ -63,7 +49,7 @@ func (r *Random) RandomStringWithTime(length int, unixTs int64) (string, error) 
 	if unixTs < 0 || unixTs > 56800235583 {
 		return "", errors.New("unixTs is out of range [0,56800235583]")
 	}
-	return r.RandomString(length-tsLen) + ameda.FormatInt(unixTs, 62), nil
+	return r.RandomString(length-tsLen) + FormatInt(unixTs, 62), nil
 }
 
 // ParseTime parses UNIX timestamp(in second) from stringWithTime.
@@ -72,14 +58,13 @@ func (r *Random) ParseTime(stringWithTime string) (unixTs int64, err error) {
 	if length <= tsLen {
 		return 0, errors.New("stringWithTime length is less than 7")
 	}
-	return ameda.ParseInt(stringWithTime[length-6:], 62, 64)
+	return ParseInt(stringWithTime[length-6:], 62, 64)
 }
 
 const urlEncoder = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 
 var urlRandom = &Random{
-	encoding:      base64.URLEncoding,
-	substitute:    []byte(urlEncoder),
+	substitute:    []rune(urlEncoder),
 	substituteLen: len(urlEncoder),
 }
 

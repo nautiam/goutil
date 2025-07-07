@@ -3,8 +3,6 @@ package goutil
 import (
 	"reflect"
 	"unsafe"
-
-	"github.com/andeya/goutil/internal/ameda"
 )
 
 // AddrInt returns a pointer int representing the address of i.
@@ -24,9 +22,29 @@ func InitAndGetString(strPtr *string, def string) string {
 	return *strPtr
 }
 
-// InitPointer initializes null pointer.
-func InitPointer(v reflect.Value) bool {
-	return ameda.InitPointer(v)
+// InitPointer initializes nil pointer with zero value.
+func InitPointer(v reflect.Value) (done bool) {
+	for {
+		kind := v.Kind()
+		if kind == reflect.Interface {
+			v = v.Elem()
+			continue
+		}
+		if kind != reflect.Ptr {
+			return true
+		}
+		u := v.Elem()
+		if u.IsValid() {
+			v = u
+			continue
+		}
+		if !v.CanSet() {
+			return false
+		}
+		v2 := reflect.New(v.Type().Elem())
+		v.Set(v2)
+		v = v.Elem()
+	}
 }
 
 // DereferenceType dereference, get the underlying non-pointer type.
@@ -133,3 +151,10 @@ const (
 	// Is32BitPlatform Whether the current system is a 32-bit platform
 	Is32BitPlatform bool = (32 << (^uint(0) >> 63)) == 0
 )
+
+func oneBool(b []bool) bool {
+	if len(b) > 0 {
+		return b[0]
+	}
+	return false
+}

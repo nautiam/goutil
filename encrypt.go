@@ -13,8 +13,6 @@ import (
 	"errors"
 	"hash/fnv"
 	"io"
-
-	"github.com/andeya/goutil/internal/ameda"
 )
 
 // Md5 returns the MD5 checksum string of the data.
@@ -236,14 +234,14 @@ func pkcs5Unpadding(r []byte) ([]byte, error) {
 }
 
 func encode(src []byte, useBase64 []bool) []byte {
-	if ameda.OneBool(useBase64) {
+	if oneBool(useBase64) {
 		return base64Encode(src)
 	}
 	return hexEncode(src)
 }
 
 func decode(src []byte, useBase64 []bool) ([]byte, error) {
-	if ameda.OneBool(useBase64) {
+	if oneBool(useBase64) {
 		return base64Decode(src)
 	}
 	return hexDecode(src)

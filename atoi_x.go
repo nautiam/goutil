@@ -1,4 +1,4 @@
-package ameda
+package goutil
 
 import (
 	"bytes"

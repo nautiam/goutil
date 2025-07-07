@@ -1,77 +1,198 @@
 package goutil
 
-import (
-	"github.com/andeya/goutil/internal/ameda"
-)
+import "strconv"
+
+func isEmptyAsZero(emptyAsZero []bool) bool {
+	return len(emptyAsZero) > 0 && emptyAsZero[0]
+}
 
 // CopyStrings creates a copy of the string slice.
 func CopyStrings(a []string) []string {
-	return ameda.StringsCopy(a)
+	b := make([]string, len(a))
+	copy(b, a)
+	return b
 }
 
 // StringsToBools converts string slice to bool slice.
 func StringsToBools(a []string, emptyAsZero ...bool) ([]bool, error) {
-	return ameda.StringsToBools(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]bool, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseBool(v)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = i
+	}
+	return r, nil
 }
 
 // StringsToFloat32s converts string slice to float32 slice.
 func StringsToFloat32s(a []string, emptyAsZero ...bool) ([]float32, error) {
-	return ameda.StringsToFloat32s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]float32, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseFloat(v, 32)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = float32(i)
+	}
+	return r, nil
 }
 
 // StringsToFloat64s converts string slice to float64 slice.
 func StringsToFloat64s(a []string, emptyAsZero ...bool) ([]float64, error) {
-	return ameda.StringsToFloat64s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]float64, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseFloat(v, 64)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = i
+	}
+	return r, nil
 }
 
 // StringsToInts converts string slice to int slice.
 func StringsToInts(a []string, emptyAsZero ...bool) ([]int, error) {
-	return ameda.StringsToInts(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]int, len(a))
+	for k, v := range a {
+		i, err := strconv.Atoi(v)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = i
+	}
+	return r, nil
 }
 
 // StringsToInt64s converts string slice to int64 slice.
 func StringsToInt64s(a []string, emptyAsZero ...bool) ([]int64, error) {
-	return ameda.StringsToInt64s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]int64, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseInt(v, 10, 64)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = i
+	}
+	return r, nil
 }
 
 // StringsToInt32s converts string slice to int32 slice.
 func StringsToInt32s(a []string, emptyAsZero ...bool) ([]int32, error) {
-	return ameda.StringsToInt32s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]int32, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseInt(v, 10, 32)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = int32(i)
+	}
+	return r, nil
 }
 
 // StringsToInt16s converts string slice to int16 slice.
 func StringsToInt16s(a []string, emptyAsZero ...bool) ([]int16, error) {
-	return ameda.StringsToInt16s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]int16, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseInt(v, 10, 16)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = int16(i)
+	}
+	return r, nil
 }
 
 // StringsToInt8s converts string slice to int8 slice.
 func StringsToInt8s(a []string, emptyAsZero ...bool) ([]int8, error) {
-	return ameda.StringsToInt8s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]int8, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseInt(v, 10, 8)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = int8(i)
+	}
+	return r, nil
 }
 
 // StringsToUint8s converts string slice to uint8 slice.
 func StringsToUint8s(a []string, emptyAsZero ...bool) ([]uint8, error) {
-	return ameda.StringsToUint8s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]uint8, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseUint(v, 10, 8)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = uint8(i)
+	}
+	return r, nil
 }
 
 // StringsToUint16s converts string slice to uint16 slice.
 func StringsToUint16s(a []string, emptyAsZero ...bool) ([]uint16, error) {
-	return ameda.StringsToUint16s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]uint16, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseUint(v, 10, 16)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = uint16(i)
+	}
+	return r, nil
 }
 
 // StringsToUint32s converts string slice to uint32 slice.
 func StringsToUint32s(a []string, emptyAsZero ...bool) ([]uint32, error) {
-	return ameda.StringsToUint32s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]uint32, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseUint(v, 10, 32)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = uint32(i)
+	}
+	return r, nil
 }
 
 // StringsToUint64s converts string slice to uint64 slice.
 func StringsToUint64s(a []string, emptyAsZero ...bool) ([]uint64, error) {
-	return ameda.StringsToUint64s(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]uint64, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseUint(v, 10, 64)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = uint64(i)
+	}
+	return r, nil
 }
 
 // StringsToUints converts string slice to uint slice.
 func StringsToUints(a []string, emptyAsZero ...bool) ([]uint, error) {
-	return ameda.StringsToUints(a, emptyAsZero...)
+	strict := !isEmptyAsZero(emptyAsZero)
+	r := make([]uint, len(a))
+	for k, v := range a {
+		i, err := strconv.ParseUint(v, 10, 64)
+		if err != nil && strict {
+			return nil, err
+		}
+		r[k] = uint(i)
+	}
+	return r, nil
 }
 
 // StringsConvert converts the string slice to a new slice using fn.
@@ -103,131 +224,291 @@ func StringsConvertMap(a []string, fn func(string) (string, error)) (map[string]
 }
 
 // IntersectStrings calculate intersection of two sets.
-func IntersectStrings(set1, set2 []string) []string {
-	return ameda.StringSetIntersect(set1, set2)
+func IntersectStrings(set1 []string, others ...[]string) []string {
+	if len(others) == 0 {
+		return StringsDistinct(set1)
+	}
+	setsCount := make([]map[string]int, len(others))
+	for k, v := range others {
+		setsCount[k] = stringsDistinct(v, nil)
+	}
+	m := make(map[string]struct{}, len(set1))
+	r := make([]string, 0, len(m))
+L:
+	for _, v := range set1 {
+		if _, ok := m[v]; ok {
+			continue
+		}
+		m[v] = struct{}{}
+		for _, m2 := range setsCount {
+			if m2[v] == 0 {
+				continue L
+			}
+		}
+		r = append(r, v)
+	}
+	return r
+}
+
+func stringsDistinct(src []string, dst *[]string) map[string]int {
+	m := make(map[string]int, len(src))
+	if dst == nil {
+		for _, v := range src {
+			n := m[v]
+			m[v] = n + 1
+		}
+	} else {
+		a := *dst
+		for _, v := range src {
+			n := m[v]
+			m[v] = n + 1
+			if n == 0 {
+				a = append(a, v)
+			}
+		}
+		*dst = a
+	}
+	return m
 }
 
 // StringsDistinct creates a string set that
 // removes the same elements and returns them in their original order.
 func StringsDistinct(a []string) (set []string) {
-	set = ameda.StringsCopy(a)
-	ameda.StringsDistinct(&set, true)
+	m := make(map[string]bool, len(a))
+	set = make([]string, 0, len(a))
+	for _, s := range a {
+		if m[s] {
+			continue
+		}
+		set = append(set, s)
+		m[s] = true
+	}
 	return set
 }
 
 // SetToStrings sets a element to the string set.
 func SetToStrings(set []string, a ...string) []string {
-	return ameda.StringsPushDistinct(set, a...)
+	for _, s := range a {
+		set = setOneToStrings(set, s)
+	}
+	return set
+}
+
+func setOneToStrings(set []string, a string) []string {
+	for _, s := range set {
+		if s == a {
+			return set
+		}
+	}
+	return append(set, a)
 }
 
 // RemoveFromStrings removes the first element from the string set.
 func RemoveFromStrings(set []string, a string) []string {
-	ameda.StringsRemoveFirst(&set, a)
+	for i, s := range set {
+		if s == a {
+			return append(set[:i], set[i+1:]...)
+		}
+	}
 	return set
 }
 
 // RemoveAllFromStrings removes all the a element from the string set.
 func RemoveAllFromStrings(set []string, a string) []string {
-	ameda.StringsRemoveEvery(&set, a)
-	return set
+	length := len(set)
+	for {
+		set = RemoveFromStrings(set, a)
+		if length == len(set) {
+			return set
+		}
+		length = len(set)
+	}
 }
 
 // IntsDistinct creates a int set that
 // removes the same elements and returns them in their original order.
 func IntsDistinct(a []int) (set []int) {
-	set = ameda.IntsCopy(a)
-	ameda.IntsDistinct(&set, true)
+	m := make(map[int]bool, len(a))
+	set = make([]int, 0, len(a))
+	for _, s := range a {
+		if m[s] {
+			continue
+		}
+		set = append(set, s)
+		m[s] = true
+	}
 	return set
 }
 
 // SetToInts sets a element to the int set.
 func SetToInts(set []int, a int) []int {
-	return ameda.IntsPushDistinct(set, a)
+	for _, s := range set {
+		if s == a {
+			return set
+		}
+	}
+	return append(set, a)
 }
 
 // RemoveFromInts removes the first element from the int set.
 func RemoveFromInts(set []int, a int) []int {
-	ameda.IntsRemoveFirst(&set, a)
+	for i, s := range set {
+		if s == a {
+			return append(set[:i], set[i+1:]...)
+		}
+	}
 	return set
 }
 
 // RemoveAllFromInts removes all the a element from the int set.
 func RemoveAllFromInts(set []int, a int) []int {
-	ameda.IntsRemoveEvery(&set, a)
-	return set
+	length := len(set)
+	for {
+		set = RemoveFromInts(set, a)
+		if length == len(set) {
+			return set
+		}
+		length = len(set)
+	}
 }
 
 // Int32sDistinct creates a int32 set that
 // removes the same element32s and returns them in their original order.
 func Int32sDistinct(a []int32) (set []int32) {
-	set = ameda.Int32sCopy(a)
-	ameda.Int32sDistinct(&set, true)
+	m := make(map[int32]bool, len(a))
+	set = make([]int32, 0, len(a))
+	for _, s := range a {
+		if m[s] {
+			continue
+		}
+		set = append(set, s)
+		m[s] = true
+	}
 	return set
 }
 
 // SetToInt32s sets a element to the int32 set.
 func SetToInt32s(set []int32, a int32) []int32 {
-	return ameda.Int32sPushDistinct(set, a)
+	for _, s := range set {
+		if s == a {
+			return set
+		}
+	}
+	return append(set, a)
 }
 
 // RemoveFromInt32s removes the first element from the int32 set.
 func RemoveFromInt32s(set []int32, a int32) []int32 {
-	ameda.Int32sRemoveFirst(&set, a)
+	for i, s := range set {
+		if s == a {
+			return append(set[:i], set[i+1:]...)
+		}
+	}
 	return set
 }
 
 // RemoveAllFromInt32s removes all the a element from the int32 set.
 func RemoveAllFromInt32s(set []int32, a int32) []int32 {
-	ameda.Int32sRemoveEvery(&set, a)
-	return set
+	length := len(set)
+	for {
+		set = RemoveFromInt32s(set, a)
+		if length == len(set) {
+			return set
+		}
+		length = len(set)
+	}
 }
 
 // Int64sDistinct creates a int64 set that
 // removes the same element64s and returns them in their original order.
 func Int64sDistinct(a []int64) (set []int64) {
-	set = ameda.Int64sCopy(a)
-	ameda.Int64sDistinct(&set, true)
+	m := make(map[int64]bool, len(a))
+	set = make([]int64, 0, len(a))
+	for _, s := range a {
+		if m[s] {
+			continue
+		}
+		set = append(set, s)
+		m[s] = true
+	}
 	return set
 }
 
 // SetToInt64s sets a element to the int64 set.
 func SetToInt64s(set []int64, a int64) []int64 {
-	return ameda.Int64sPushDistinct(set, a)
+	for _, s := range set {
+		if s == a {
+			return set
+		}
+	}
+	return append(set, a)
 }
 
 // RemoveFromInt64s removes the first element from the int64 set.
 func RemoveFromInt64s(set []int64, a int64) []int64 {
-	ameda.Int64sRemoveFirst(&set, a)
+	for i, s := range set {
+		if s == a {
+			return append(set[:i], set[i+1:]...)
+		}
+	}
 	return set
 }
 
 // RemoveAllFromInt64s removes all the a element from the int64 set.
 func RemoveAllFromInt64s(set []int64, a int64) []int64 {
-	ameda.Int64sRemoveEvery(&set, a)
-	return set
+	length := len(set)
+	for {
+		set = RemoveFromInt64s(set, a)
+		if length == len(set) {
+			return set
+		}
+		length = len(set)
+	}
 }
 
 // InterfacesDistinct creates a interface{} set that
 // removes the same elements and returns them in their original order.
 func InterfacesDistinct(a []interface{}) (set []interface{}) {
-	set = ameda.InterfacesCopy(a)
-	ameda.InterfacesDistinct(&set, true)
+	m := make(map[interface{}]bool, len(a))
+	set = make([]interface{}, 0, len(a))
+	for _, s := range a {
+		if m[s] {
+			continue
+		}
+		set = append(set, s)
+		m[s] = true
+	}
 	return set
 }
 
 // SetToInterfaces sets a element to the interface{} set.
 func SetToInterfaces(set []interface{}, a interface{}) []interface{} {
-	return ameda.InterfacesPushDistinct(set, a)
+	for _, s := range set {
+		if s == a {
+			return set
+		}
+	}
+	return append(set, a)
 }
 
 // RemoveFromInterfaces removes the first element from the interface{} set.
 func RemoveFromInterfaces(set []interface{}, a interface{}) []interface{} {
-	ameda.InterfacesRemoveFirst(&set, a)
+	for i, s := range set {
+		if s == a {
+			return append(set[:i], set[i+1:]...)
+		}
+	}
 	return set
 }
 
 // RemoveAllFromInterfaces removes all the a element from the interface{} set.
 func RemoveAllFromInterfaces(set []interface{}, a interface{}) []interface{} {
-	ameda.InterfacesRemoveEvery(&set, a)
-	return set
+	length := len(set)
+	for {
+		set = RemoveFromInterfaces(set, a)
+		if length == len(set) {
+			return set
+		}
+		length = len(set)
+	}
 }
