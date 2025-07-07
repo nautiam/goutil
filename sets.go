@@ -13,6 +13,17 @@ func CopyStrings(a []string) []string {
 	return b
 }
 
+// StringsReverse reverses an slice in place.
+func StringsReverse(s []string) {
+	first := 0
+	last := len(s) - 1
+	for first < last {
+		s[first], s[last] = s[last], s[first]
+		first++
+		last--
+	}
+}
+
 // StringsToBools converts string slice to bool slice.
 func StringsToBools(a []string, emptyAsZero ...bool) ([]bool, error) {
 	strict := !isEmptyAsZero(emptyAsZero)

@@ -6,6 +6,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestStringsReverse(t *testing.T) {
+	slice := []string{"1", "2", "3", "4"}
+	StringsReverse(slice)
+	assert.Equal(t, []string{"4", "3", "2", "1"}, slice)
+}
+
 func TestSetToStrings(t *testing.T) {
 	a := make([]string, 0, 10)
 	a = append(a, "1", "2", "3")
